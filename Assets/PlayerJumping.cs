@@ -19,7 +19,7 @@ public class PlayerJumping : MonoBehaviour
 
     void OnDisable(){player.OnBeforeMove -= OnBeforeMove;}
 
-        void OnJump()
+    void OnJump()
     {
         isTryingToJump = true;
         lastJumpPressTime = Time.time;

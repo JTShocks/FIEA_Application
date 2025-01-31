@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.Interactions;
 public class PlayerMovement : MonoBehaviour
 {
 
-    Rigidbody characterBody;
+    internal Rigidbody characterBody;
     Vector2 moveInput;
     Vector3 moveDirection;
     internal Vector3 velocity;
@@ -121,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     
     Vector3 Friction(Vector3 velocity, float currentFrame)
     {
-        float c = 0.00001f; // The coefficient of friction for surfaces.
+        float c = 0.0001f; // The coefficient of friction for surfaces.
 
         Vector3 friction = velocity;
         friction.Normalize();
@@ -177,6 +177,6 @@ public class PlayerMovement : MonoBehaviour
 
     bool CheckIsGrounded()
     {
-        return Physics.Raycast(characterBody.position, Vector3.down, 1.2f, whatIsGround);
+        return Physics.Raycast(characterBody.position, Vector3.down, 1f, whatIsGround);
     }
 }
