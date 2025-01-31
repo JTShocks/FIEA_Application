@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 moveDirection;
     internal Vector3 velocity;
 
-    LayerMask whatIsGround;
+    [SerializeField] LayerMask whatIsGround;
 
     bool isGrounded => CheckIsGrounded();
 
@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     {
         characterBody = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
-        moveAction = playerInput.actions["move"];
+        moveAction = playerInput.actions["Move"];
     }
 
     // Start is called before the first frame update
@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
 
         velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
 
-        characterBody.AddForce(velocity * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        characterBody.velocity = velocity;
         
     }
 
