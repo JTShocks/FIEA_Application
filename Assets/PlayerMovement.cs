@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] LayerMask whatIsGround;
 
-    bool isGrounded => CheckIsGrounded();
+    internal bool isGrounded => CheckIsGrounded();
 
     [Header("Player Move Values")]
     [SerializeField]

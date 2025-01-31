@@ -19,8 +19,21 @@ public class PlayerJumping : MonoBehaviour
 
     void OnDisable(){player.OnBeforeMove -= OnBeforeMove;}
 
+        void OnJump()
+    {
+        isTryingToJump = true;
+        lastJumpPressTime = Time.time;
+    }
+
     private void OnBeforeMove()
     {
-        throw new NotImplementedException();
+        bool wasTryingToJump = Time.time - lastJumpPressTime < jumpPressBufferTime;
+
+        bool isOrWasTryingToJump = isTryingToJump || wasTryingToJump;
+        if(isOrWasTryingToJump && player.isGrounded)
+        {
+            player.velocity.y += jumpSpeed;
+        }
+        isTryingToJump = false;
     }
 }
