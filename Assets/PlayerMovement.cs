@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private float airStrafeForce;
 
     //Handle the cap on the maxium acceleration
-    float maxAccel => maxGroundSpeed * 4;
+    float maxAccel => maxGroundSpeed * 2;
 
     [Space(10)]
     [SerializeField]
