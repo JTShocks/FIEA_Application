@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,7 @@ using UnityEngine.InputSystem.Interactions;
 public class PlayerMovement : MonoBehaviour
 {
 
+    [SerializeField] TMP_Text speedometer;
     internal Rigidbody characterBody;
     Vector2 moveInput;
     Vector3 moveDirection;
@@ -65,7 +67,14 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerCurrentSpeed = Mathf.Round(characterBody.velocity.magnitude);
+
+            playerCurrentSpeed = Mathf.Round(characterBody.velocity.magnitude);
+        if(playerCurrentSpeed <= 1)
+        {
+            playerCurrentSpeed = 0;
+        }
+
+        speedometer.text = playerCurrentSpeed.ToString("#### km/s");
     }
 
     void FixedUpdate()
@@ -121,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
     
     Vector3 Friction(Vector3 velocity, float currentFrame)
     {
-        float c = 0.0001f; // The coefficient of friction for surfaces.
+        float c = 0.00001f; // The coefficient of friction for surfaces.
 
         Vector3 friction = velocity;
         friction.Normalize();
@@ -177,6 +186,6 @@ public class PlayerMovement : MonoBehaviour
 
     bool CheckIsGrounded()
     {
-        return Physics.Raycast(characterBody.position, Vector3.down, 1f, whatIsGround);
+        return Physics.Raycast(characterBody.position, Vector3.down, 1.1f, whatIsGround);
     }
 }
