@@ -32,6 +32,6 @@ public class WeaponController : MonoBehaviour
 
         instance.transform.position = spawnLocation.position;
 
-        projectile.Shoot(spawnLocation.position, spawnLocation.forward, projectile.speed);
+        projectile.Shoot(spawnLocation.position, spawnLocation.forward);
     }
 }
