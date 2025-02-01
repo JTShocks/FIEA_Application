@@ -5,15 +5,23 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private GameObject prefab;
-    [SerializeField] private Transform shootLocation;
+    [SerializeField] private GameObject leftPrefab;
+    [SerializeField] private GameObject rightPrefab;
+    [SerializeField] private Transform leftShootLocation;
+    
+    [SerializeField] private Transform rightShootLocation;
     void OnFire()
     {
-        GameObject bolt = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-        SpawnBolt(bolt);
+        GameObject bolt = Instantiate(leftPrefab, Vector3.zero, Quaternion.identity);
+        SpawnBolt(bolt, leftShootLocation);
+    }
+    void OnAltFire()
+    {
+        GameObject bolt = Instantiate(leftPrefab, Vector3.zero, Quaternion.identity);
+        SpawnBolt(bolt, rightShootLocation);
     }
 
-    private void SpawnBolt(GameObject instance)
+    private void SpawnBolt(GameObject instance, Transform spawnLocation)
     {
         //Spawn the prefab and check if it is a projectile
         IProjectile projectile = instance.GetComponent<IProjectile>();
@@ -21,16 +29,9 @@ public class WeaponController : MonoBehaviour
         {
             return;
         }
-        
-        Vector3 spawnLocation = new Vector3
-        (
-            shootLocation.transform.position.x,
-            shootLocation.transform.position.y,
-            shootLocation.transform.position.z
-        );
 
-        instance.transform.position = spawnLocation;
+        instance.transform.position = spawnLocation.position;
 
-        projectile.Shoot(spawnLocation, shootLocation.transform.forward, projectile.speed);
+        projectile.Shoot(spawnLocation.position, spawnLocation.forward, projectile.speed);
     }
 }
