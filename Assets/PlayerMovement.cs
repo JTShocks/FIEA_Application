@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     Vector2 moveInput;
     Vector3 moveDirection;
     internal Vector3 velocity;
+    internal Vector3 velocityLastFrame;
 
     [SerializeField] LayerMask whatIsGround;
 
@@ -57,6 +58,10 @@ public class PlayerMovement : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions["Move"];
     }
+    void OnEnable()
+    {
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -79,15 +84,25 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        UpdateGravity();
+        //UpdateGravity();
         UpdateMovement();
+                if(isGrounded)
+        {
+           velocity.y = -1;
+        }
 
     }
 
     void UpdateGravity()
     {
         var gravity =  characterBody.mass * Time.fixedDeltaTime * Physics.gravity;
-        velocity.y = isGrounded ? - 1f : velocity.y + gravity.y;
+
+
+        if(!isGrounded)
+        {
+            velocity.y += gravity.y;
+        }
+        //velocity.y = isGrounded ? - 1f : velocity.y += gravity.y;
     }
 
     void UpdateMovement()
@@ -100,18 +115,22 @@ public class PlayerMovement : MonoBehaviour
 
         if(isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f;
+            //velocity.y = -2f;
             velocity = ChangeGroundVel(input, velocity, Time.fixedDeltaTime);
+            
         }
         else
         {
             velocity = ChangeAirVel(input, velocity, Time.fixedDeltaTime);
+            
+            
         }
 
-        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
-
         characterBody.velocity = velocity;
-        
+        characterBody.velocity = Vector3.ClampMagnitude(characterBody.velocity, maxSpeed);
+
+
+
     }
 
 #region Vector Functions for input and handling movement changes due to physics
@@ -130,7 +149,7 @@ public class PlayerMovement : MonoBehaviour
     
     Vector3 Friction(Vector3 velocity, float currentFrame)
     {
-        float c = 0.00001f; // The coefficient of friction for surfaces.
+        float c = 0.0001f; // The coefficient of friction for surfaces.
 
         Vector3 friction = velocity;
         friction.Normalize();
@@ -145,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
     {
         velocity = Friction(velocity, currentFrame);
         float currentSpeed = Vector3.Dot(velocity, desireDir);
-        float add_speed = Mathf.Clamp(maxGroundSpeed - currentSpeed, 0, maxAccel * currentFrame);
+        float add_speed = Mathf.Clamp(maxGroundSpeed - currentSpeed, -maxGroundSpeed, maxAccel * currentFrame);
 
         return velocity + add_speed * desireDir;
     }
@@ -186,6 +205,28 @@ public class PlayerMovement : MonoBehaviour
 
     bool CheckIsGrounded()
     {
-        return Physics.Raycast(characterBody.position, Vector3.down, 1.1f, whatIsGround);
+        return Physics.Raycast(characterBody.position, Vector3.down, 1.01f, whatIsGround);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+
+        Debug.Log("Contact!");
+        foreach(ContactPoint contact in collision.contacts)
+        {
+            string tag = collision.collider.tag;
+
+
+            switch(tag)
+            {
+                case "Bouncy":
+                    Debug.Log("Hit bouncy surface. Player velocity: " + collision.relativeVelocity);
+                    Vector3 bounce = Vector3.Reflect(collision.relativeVelocity,contact.normal);
+                    characterBody.velocity += Vector3.up * 100;
+                    //SendMessage("OnBounce", bounce);
+                break;
+            }
+        }
+
     }
 }

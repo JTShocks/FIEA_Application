@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Bomb : MonoBehaviour, IProjectile
 {
 
@@ -12,13 +13,14 @@ public class Bomb : MonoBehaviour, IProjectile
     private Rigidbody rb;
     private MeshRenderer mesh;
 
+    [Header("Generic Bomb Fields")]
     [SerializeField]
     private float damage = 0f;
     [SerializeField]
     private float explodeRadius = 0f;
-    [SerializeField]
-    private float explodeForce = 0f;
-    [SerializeField] private float projectileSpeed;
+    [SerializeField] private float projectileSpeed = 10f;
+
+    [HideInInspector]
     public float speed { get => projectileSpeed; set => speed = value; }
 
     public Action TriggerBombExplode;
