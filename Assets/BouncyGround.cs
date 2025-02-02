@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BouncyGround : MonoBehaviour
+public class BouncyGround : MonoBehaviour, IReactable
 {
 
     void Awake()
@@ -16,6 +16,21 @@ public class BouncyGround : MonoBehaviour
         Vector3 velocity = collision.relativeVelocity;
         Debug.Log("Bouncy ground impact:" + velocity);
         //Play bounce SFX
+    }
+
+    public void React(Bomb.Element element)
+    {
+        switch(element)
+        {
+            case Bomb.Element.Fire:
+                //Bouncy ground explodes and pushes player high into the sky
+            break;
+        }
+    }
+
+    public void OnReaction()
+    {
+        throw new NotImplementedException();
     }
 
 

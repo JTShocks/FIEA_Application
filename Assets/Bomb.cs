@@ -6,11 +6,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Bomb : MonoBehaviour, IProjectile
 {
-
+    public enum Element{
+        Fire,
+        Ice
+    }
     [SerializeField]
     private ParticleSystem impactEffect;
     private Rigidbody rb;
     private MeshRenderer mesh;
+    [SerializeField] Element bombElement;
 
     [Header("Generic Bomb Fields")]
     [SerializeField]
