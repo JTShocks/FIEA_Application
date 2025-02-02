@@ -101,8 +101,19 @@ public class PlayerMovement : MonoBehaviour
     {
         OnBeforeMove?.Invoke();
         var input = GetMovementInput();
-        velocity = input * maxGroundSpeed;
+
+        if(isGrounded)
+        {
+            velocity = ChangeGroundVel(input, characterBody.velocity, Time.fixedDeltaTime);
+        }
+        else
+        {
+            velocity = ChangeAirVel(input, characterBody.velocity, Time.fixedDeltaTime);
+        }
+
+        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
         characterBody.velocity = new Vector3(velocity.x, characterBody.velocity.y, velocity.z);
+        
     }
 
     Vector3 GetMovementInput()
@@ -116,6 +127,59 @@ public class PlayerMovement : MonoBehaviour
         input += transform.right * moveInput.x;
         input = Vector3.ClampMagnitude(input, 1f);
         return input;
+    }
+    public Vector3 ChangeAirVel(Vector3 desireDir, Vector3 velocity, float currentFrame)
+    {   
+
+        //Project the desired movement onto the current velocity vector
+        Vector3 projectedVelocity = Vector3.Project(characterBody.velocity, desireDir);
+        //Check to see if the movement is toward or away from the projected velocity
+        bool isAway = Vector3.Dot(desireDir, projectedVelocity) <= 0f;
+
+        Vector3 strafeForce = Vector3.zero;
+
+        //Only change the velocity if moving away from velocity OR the velocity is below the max air speed
+        if(projectedVelocity.magnitude < maxAirSpeed || isAway)
+        {
+            //Calculate the ideal movement 
+
+            strafeForce = desireDir * airStrafeForce;
+
+            //Set the cap for the speed 
+            if(!isAway)
+            {
+                strafeForce = Vector3.ClampMagnitude(strafeForce, maxAirSpeed - projectedVelocity.magnitude);
+            }
+            else
+            {
+                strafeForce = Vector3.ClampMagnitude(strafeForce, maxAirSpeed + projectedVelocity.magnitude);
+            }
+
+
+        }
+
+        return velocity + strafeForce;
+    }
+        Vector3 Friction(Vector3 velocity, float currentFrame)
+    {
+        float c = 0.0001f; // The coefficient of friction for surfaces.
+
+        Vector3 friction = velocity;
+        friction.Normalize();
+        friction *= -c * currentFrame;
+        //friction *= currentFrame;
+        return friction;
+        // -1 * Mue (= to 1 and is constant) * magnitude of normal force * velocity.normalized * Time.deltaTime
+        
+    }
+
+    public Vector3 ChangeGroundVel(Vector3 desireDir, Vector3 velocity, float currentFrame)
+    {
+        velocity = Friction(velocity, currentFrame);
+        float currentSpeed = Vector3.Dot(velocity, desireDir);
+        float add_speed = Mathf.Clamp(maxGroundSpeed - currentSpeed, 0, maxAccel * currentFrame);
+
+        return velocity + add_speed * desireDir;
     }
     /*
     void UpdateGravity()
@@ -165,60 +229,9 @@ public class PlayerMovement : MonoBehaviour
 #region Vector Functions for input and handling movement changes due to physics
 
     
-    Vector3 Friction(Vector3 velocity, float currentFrame)
-    {
-        float c = 0.0001f; // The coefficient of friction for surfaces.
-
-        Vector3 friction = velocity;
-        friction.Normalize();
-        friction *= -c * currentFrame;
-        //friction *= currentFrame;
-        return friction;
-        // -1 * Mue (= to 1 and is constant) * magnitude of normal force * velocity.normalized * Time.deltaTime
-        
-    }
-
-    public Vector3 ChangeGroundVel(Vector3 desireDir, Vector3 velocity, float currentFrame)
-    {
-        velocity = Friction(velocity, currentFrame);
-        float currentSpeed = Vector3.Dot(velocity, desireDir);
-        float add_speed = Mathf.Clamp(maxGroundSpeed - currentSpeed, 0, maxAccel * currentFrame);
-
-        return velocity + add_speed * desireDir;
-    }
-
-    public Vector3 ChangeAirVel(Vector3 desireDir, Vector3 velocity, float currentFrame)
-    {   
-
-        //Project the desired movement onto the current velocity vector
-        Vector3 projectedVelocity = Vector3.Project(characterBody.velocity, desireDir);
-        //Check to see if the movement is toward or away from the projected velocity
-        bool isAway = Vector3.Dot(desireDir, projectedVelocity) <= 0f;
-
-        Vector3 strafeForce = Vector3.zero;
-
-        //Only change the velocity if moving away from velocity OR the velocity is below the max air speed
-        if(projectedVelocity.magnitude < maxAirSpeed || isAway)
-        {
-            //Calculate the ideal movement 
-
-            strafeForce = desireDir * airStrafeForce;
-
-            //Set the cap for the speed 
-            if(!isAway)
-            {
-                strafeForce = Vector3.ClampMagnitude(strafeForce, maxAirSpeed - projectedVelocity.magnitude);
-            }
-            else
-            {
-                strafeForce = Vector3.ClampMagnitude(strafeForce, maxAirSpeed + projectedVelocity.magnitude);
-            }
 
 
-        }
-
-        return velocity + strafeForce;
-    }
+    
     #endregion
     */
     bool CheckIsGrounded()

@@ -5963,10 +5963,10 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  maxSpeed: 10
+  maxSpeed: 30
   maxAirSpeed: 2
-  maxGroundSpeed: 5
-  airStrafeForce: 1
+  maxGroundSpeed: 120
+  airStrafeForce: 0.5
   playerCurrentSpeed: 0
   movementSpeedMultiplier: 0
 --- !u!136 &1925120996

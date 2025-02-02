@@ -32,7 +32,7 @@ public class PlayerJumping : MonoBehaviour
         bool isOrWasTryingToJump = isTryingToJump || wasTryingToJump;
         if(isOrWasTryingToJump && player.isGrounded)
         {
-            player.characterBody.AddForce(Vector3.up *  jumpSpeed, ForceMode.Impulse);
+            player.characterBody.velocity += Vector3.up * jumpSpeed;
         }
         isTryingToJump = false;
     }
