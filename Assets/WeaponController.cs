@@ -31,6 +31,9 @@ public class WeaponController : MonoBehaviour
         }
 
         instance.transform.position = spawnLocation.position;
+        
+        //Set to same layer so they do not collide
+        instance.layer = this.gameObject.layer;
 
         projectile.Shoot(spawnLocation.position, spawnLocation.forward);
     }

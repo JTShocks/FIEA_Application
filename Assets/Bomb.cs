@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -25,6 +24,8 @@ public class Bomb : MonoBehaviour, IProjectile
 
     public Action TriggerBombExplode;
 
+    internal Vector3 contactNormal;
+
     void OnEnable()
     {
         TriggerBombExplode += OnExplode;
@@ -42,11 +43,16 @@ public class Bomb : MonoBehaviour, IProjectile
     }
     public void OnCollisionEnter(Collision other)
     {
-            impactEffect.transform.forward = -1 * transform.forward;
-            impactEffect.Play();
+        if(other.collider.material.bounciness <= .1f)
+        {
+            //Only explode if the hit is something non-bouncy
+            //impactEffect.transform.forward = -1 * transform.forward;
+            //impactEffect.Play();
             rb.velocity = Vector3.zero;
-            
+            contactNormal = other.contacts[0].normal;
             Explode();
+        }
+
     }
 
     public void OnParticleSystemStopped()

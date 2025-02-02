@@ -77,7 +77,8 @@ MonoBehaviour:
   impactEffect: {fileID: 0}
   damage: 0
   explodeRadius: 0
-  projectileSpeed: 10
+  projectileSpeed: 20
+  bouncyGroundPrefab: {fileID: 19321026383580809, guid: c1258939c5178cb478535591382bf8cd, type: 3}
 --- !u!136 &2331881065913206778
 CapsuleCollider:
   m_ObjectHideFlags: 0
