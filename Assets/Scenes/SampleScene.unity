@@ -5942,11 +5942,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!114 &1925120995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5963,9 +5963,9 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  maxSpeed: 30
+  maxSpeed: 10
   maxAirSpeed: 2
-  maxGroundSpeed: 120
+  maxGroundSpeed: 5
   airStrafeForce: 1
   playerCurrentSpeed: 0
   movementSpeedMultiplier: 0
@@ -6581,7 +6581,7 @@ GameObject:
   - component: {fileID: 2110043875}
   - component: {fileID: 2110043880}
   - component: {fileID: 2110043881}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Plane (1)
   m_TagString: Bouncy
   m_Icon: {fileID: 0}
@@ -6611,10 +6611,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!23 &2110043877
 MeshRenderer:
   m_ObjectHideFlags: 0

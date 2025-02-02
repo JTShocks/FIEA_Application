@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-            playerCurrentSpeed = Mathf.Round(characterBody.velocity.magnitude);
+        playerCurrentSpeed = Mathf.Round(characterBody.velocity.magnitude);
         if(playerCurrentSpeed <= 1)
         {
             playerCurrentSpeed = 0;
@@ -85,55 +85,26 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         //UpdateGravity();
-        UpdateMovement();
-                if(isGrounded)
+        //UpdateMovement();
+        if(isGrounded)
         {
-           velocity.y = -1;
+          // velocity.y = -1;
         }
+
+        MovePlayer();
 
     }
 
-    void UpdateGravity()
+    //rewrite the character controller to be based on rigidbody forces
+
+    void MovePlayer()
     {
-        var gravity =  characterBody.mass * Time.fixedDeltaTime * Physics.gravity;
-
-
-        if(!isGrounded)
-        {
-            velocity.y += gravity.y;
-        }
-        //velocity.y = isGrounded ? - 1f : velocity.y += gravity.y;
-    }
-
-    void UpdateMovement()
-    {
-        movementSpeedMultiplier = 1f;
-        //Check to see if anything should happen before moving
         OnBeforeMove?.Invoke();
         var input = GetMovementInput();
-
-
-        if(isGrounded && velocity.y < 0)
-        {
-            //velocity.y = -2f;
-            velocity = ChangeGroundVel(input, velocity, Time.fixedDeltaTime);
-            
-        }
-        else
-        {
-            velocity = ChangeAirVel(input, velocity, Time.fixedDeltaTime);
-            
-            
-        }
-
-        characterBody.velocity = velocity;
-        characterBody.velocity = Vector3.ClampMagnitude(characterBody.velocity, maxSpeed);
-
-
-
+        velocity = input * maxGroundSpeed;
+        characterBody.velocity = new Vector3(velocity.x, characterBody.velocity.y, velocity.z);
     }
 
-#region Vector Functions for input and handling movement changes due to physics
     Vector3 GetMovementInput()
     {    
         var moveInput = moveAction.ReadValue<Vector2>();
@@ -146,6 +117,53 @@ public class PlayerMovement : MonoBehaviour
         input = Vector3.ClampMagnitude(input, 1f);
         return input;
     }
+    /*
+    void UpdateGravity()
+    {
+        var gravity =  characterBody.mass * Time.fixedDeltaTime * Physics.gravity;
+
+
+        if(!isGrounded)
+        {
+           characterBody.AddForce(Physics.gravity, ForceMode.Force);
+        }
+        //velocity.y = isGrounded ? - 1f : velocity.y += gravity.y;
+    }
+    
+    void UpdateMovement()
+    {
+        movementSpeedMultiplier = 1f;
+        //Check to see if anything should happen before moving
+        OnBeforeMove?.Invoke();
+        var input = GetMovementInput();
+        
+
+
+        if(isGrounded && velocity.y <= 0)
+        {
+            velocity = ChangeGroundVel(input, velocity, Time.fixedDeltaTime);
+
+           
+            
+        }
+        else
+        {
+            velocity = ChangeAirVel(input, velocity, Time.fixedDeltaTime);
+            //characterBody.useGravity = true;
+            
+            
+            
+        }
+        velocity = new Vector3(velocity.x, characterBody.velocity.y, velocity.z);
+        characterBody.velocity = velocity;
+        characterBody.velocity = Vector3.ClampMagnitude(characterBody.velocity, maxSpeed);
+
+
+
+    }
+
+#region Vector Functions for input and handling movement changes due to physics
+
     
     Vector3 Friction(Vector3 velocity, float currentFrame)
     {
@@ -164,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
     {
         velocity = Friction(velocity, currentFrame);
         float currentSpeed = Vector3.Dot(velocity, desireDir);
-        float add_speed = Mathf.Clamp(maxGroundSpeed - currentSpeed, -maxGroundSpeed, maxAccel * currentFrame);
+        float add_speed = Mathf.Clamp(maxGroundSpeed - currentSpeed, 0, maxAccel * currentFrame);
 
         return velocity + add_speed * desireDir;
     }
@@ -202,10 +220,10 @@ public class PlayerMovement : MonoBehaviour
         return velocity + strafeForce;
     }
     #endregion
-
+    */
     bool CheckIsGrounded()
     {
-        return Physics.Raycast(characterBody.position, Vector3.down, 1.01f, whatIsGround);
+        return Physics.Raycast(characterBody.position, Vector3.down, 1.05f, whatIsGround);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -222,7 +240,7 @@ public class PlayerMovement : MonoBehaviour
                 case "Bouncy":
                     Debug.Log("Hit bouncy surface. Player velocity: " + collision.relativeVelocity);
                     Vector3 bounce = Vector3.Reflect(collision.relativeVelocity,contact.normal);
-                    characterBody.velocity += Vector3.up * 100;
+                    //characterBody.AddForce(bounce, ForceMode.VelocityChange);
                     //SendMessage("OnBounce", bounce);
                 break;
             }
