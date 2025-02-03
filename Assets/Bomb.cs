@@ -12,15 +12,15 @@ public class Bomb : MonoBehaviour, IProjectile
     }
     [SerializeField]
     private ParticleSystem impactEffect;
-    private Rigidbody rb;
+    internal Rigidbody rb;
     private MeshRenderer mesh;
-    [SerializeField] Element bombElement;
+    [SerializeField] internal Element bombElement;
 
     [Header("Generic Bomb Fields")]
     [SerializeField]
-    private float damage = 0f;
+    internal float damage = 0f;
     [SerializeField]
-    private float explodeRadius = 0f;
+    internal float explodeRadius = 0f;
     [SerializeField] private float projectileSpeed = 10f;
 
     [HideInInspector]
@@ -45,7 +45,7 @@ public class Bomb : MonoBehaviour, IProjectile
         mesh = GetComponent<MeshRenderer>();
 
     }
-    public void OnCollisionEnter(Collision other)
+    public virtual void OnCollisionEnter(Collision other)
     {
         if(other.collider.material.bounciness <= .1f)
         {
@@ -54,6 +54,7 @@ public class Bomb : MonoBehaviour, IProjectile
             //impactEffect.Play();
             rb.velocity = Vector3.zero;
             contactNormal = other.contacts[0].normal;
+            rb.isKinematic = true;
             Explode();
         }
 
@@ -73,7 +74,7 @@ public class Bomb : MonoBehaviour, IProjectile
         rb.AddForce(direction * speed, ForceMode.VelocityChange);
     }
 
-    void Explode()
+    internal void Explode()
     {
         //Invoke the event for everything on the object that might care about the explosion
         TriggerBombExplode?.Invoke();

@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class BouncyGround : MonoBehaviour, IReactable
 {
-
+    [Header("Fire Catalyst reaction")]
+    [SerializeField] float reactionForce = 20;
     void Awake()
     {
         //Put the bouncy component on this
@@ -24,6 +25,14 @@ public class BouncyGround : MonoBehaviour, IReactable
         {
             case Bomb.Element.Fire:
                 //Bouncy ground explodes and pushes player high into the sky
+                //physics cast to find all rigidbodies and have them instantly move upwards
+                Debug.Log("Reaction with Fire!");
+                RaycastHit[] hits = Physics.BoxCastAll(transform.position, new Vector3(5,5,5), Vector3.up, Quaternion.identity);
+
+                foreach(RaycastHit hit in hits)
+                {
+                    hit.rigidbody.AddExplosionForce(reactionForce, transform.position,5 );
+                }
             break;
         }
     }

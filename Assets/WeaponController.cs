@@ -17,7 +17,7 @@ public class WeaponController : MonoBehaviour
     }
     void OnAltFire()
     {
-        GameObject bolt = Instantiate(leftPrefab, Vector3.zero, Quaternion.identity);
+        GameObject bolt = Instantiate(rightPrefab, Vector3.zero, Quaternion.identity);
         SpawnBolt(bolt, rightShootLocation);
     }
 

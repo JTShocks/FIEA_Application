@@ -102,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
         OnBeforeMove?.Invoke();
         var input = GetMovementInput();
 
-        if(isGrounded)
+        if(isGrounded && characterBody.velocity.y <= 0)
         {
             velocity = ChangeGroundVel(input, characterBody.velocity, Time.fixedDeltaTime);
         }

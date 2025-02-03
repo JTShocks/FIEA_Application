@@ -4,15 +4,41 @@ using UnityEngine;
 
 public class FireCatalyst : Bomb
 {
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] internal float explodeForce = 10;
+
+    public override void OnCollisionEnter(Collision other)
     {
-        
+
+        other.collider.GetComponent<IReactable>()?.React(bombElement);
+
+        rb.velocity = Vector3.zero;
+        contactNormal = other.contacts[0].normal;
+        rb.isKinematic = true;
+        Explode();
     }
 
-    // Update is called once per frame
-    void Update()
+    internal override void OnExplode()
     {
-        
+        base.OnExplode();
+            Collider[] numHit = Physics.OverlapSphere(rb.position, explodeRadius);
+
+            foreach(Collider hit in numHit)
+            {
+                Vector3 contact = hit.ClosestPoint(transform.position);
+
+
+
+
+                Vector3 dir = contact - hit.transform.position;
+                dir = -dir.normalized;
+                Debug.Log("Knock back direction: " + dir);
+                Rigidbody rb = hit.GetComponent<Rigidbody>();
+                if(rb != null)
+                {
+                    rb.AddForce( dir * explodeForce, ForceMode.Impulse);
+                }
+                
+            }
     }
 }
