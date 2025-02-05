@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
             playerCurrentSpeed = 0;
         }
 
-        speedometer.text = playerCurrentSpeed.ToString("#### km/s");
+        speedometer.text = playerCurrentSpeed.ToString("#### m/s");
     }
 
     void FixedUpdate()
@@ -98,7 +98,8 @@ public class PlayerMovement : MonoBehaviour
     //rewrite the character controller to be based on rigidbody forces
 
     void MovePlayer()
-    {
+    {   
+        movementSpeedMultiplier = 1;
         OnBeforeMove?.Invoke();
         var input = GetMovementInput();
 
@@ -111,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
             velocity = ChangeAirVel(input, characterBody.velocity, Time.fixedDeltaTime);
         }
 
-        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+        velocity = Vector3.ClampMagnitude(velocity*movementSpeedMultiplier, maxSpeed);
         characterBody.velocity = new Vector3(velocity.x, characterBody.velocity.y, velocity.z);
         
     }

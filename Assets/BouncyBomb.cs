@@ -18,7 +18,7 @@ public class BouncyBomb : Bomb
         //Give a duration
 
         //Can create a prefab that holds all of these values and makes it easier to edit fine details
-        Quaternion spawnRotation = Quaternion.LookRotation(Vector3.forward, contactNormal);
+        Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.up, contactNormal);
         Instantiate(bouncyGroundPrefab, transform.position, spawnRotation);
     }
 }

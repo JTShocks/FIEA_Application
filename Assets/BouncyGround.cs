@@ -7,11 +7,19 @@ public class BouncyGround : MonoBehaviour, IReactable
 {
     [Header("Fire Catalyst reaction")]
     [SerializeField] float reactionForce = 20;
+
+    [Header("Sound Effects")]
+    [SerializeField] AudioClip bounceSound;
+    [SerializeField] AudioClip reactSound;
+
+    //[Header("VFX")]
     void Awake()
     {
         //Put the bouncy component on this
     }
     Vector3 objectVelocity;
+
+
     void OnCollisionEnter(Collision collision)
     {
         Vector3 velocity = collision.relativeVelocity;
