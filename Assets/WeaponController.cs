@@ -18,10 +18,12 @@ public class WeaponController : MonoBehaviour
 
         InputAction switchAction;
 
-        public static event Action<int> TriggerSwitchWeapons;
+        public static event Action<float> TriggerSwitchWeapons;
 
         int currentLeftPrefab = 0;
         int currentRightPrefab = 0;
+        bool isTryingToSwitchWeapons;
+        bool isSwitchingWeapons;
 
     void Awake()
     {
@@ -50,9 +52,11 @@ public class WeaponController : MonoBehaviour
         rightPrefab = catalysts[currentRightPrefab];
     }
 
-    void SwitchItem()
+    void OnSwitchItem()
     {
-        var switchInput = switchAction.ReadValue<int>();
+        var switchInput = switchAction.ReadValue<float>();
+        isTryingToSwitchWeapons = true;
+        Debug.Log(switchInput);
 
         if(switchInput < 0)
         {
@@ -74,8 +78,31 @@ public class WeaponController : MonoBehaviour
                 currentRightPrefab = 0;
             }
         }
-        SetActivePrefabs();
         TriggerSwitchWeapons?.Invoke(switchInput);
+        StartCoroutine(SwitchWeapons());
+        isTryingToSwitchWeapons = false;
+
+    }
+
+    IEnumerator SwitchWeapons()
+    {
+        if(isTryingToSwitchWeapons && !isSwitchingWeapons)
+        {
+            isSwitchingWeapons = true;
+        }
+        else
+        {
+            Debug.Log("Cannot switch, already switching");
+            yield break;
+        }
+        Debug.Log("Switching weapons");
+        yield return new WaitForSeconds(.5f);
+        isSwitchingWeapons = false;
+        SetActivePrefabs();
+        Debug.Log("weapons have been switched");
+
+
+        yield return null;
     }
 
     private void SpawnBolt(GameObject instance, Transform spawnLocation)
