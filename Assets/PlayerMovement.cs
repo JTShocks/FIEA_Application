@@ -109,11 +109,11 @@ public class PlayerMovement : MonoBehaviour
 
         if(isGrounded && characterBody.velocity.y <= 0)
         {
-            velocity = ChangeGroundVel(input, characterBody.velocity, Time.fixedDeltaTime);
+            velocity = ChangeGroundVelocity(input, characterBody.velocity, Time.fixedDeltaTime);
         }
         else
         {
-            velocity = ChangeAirVel(input, characterBody.velocity, Time.fixedDeltaTime);
+            velocity = ChangeAirVelocity(input, characterBody.velocity, Time.fixedDeltaTime);
         }
 
         velocity = Vector3.ClampMagnitude(velocity*movementSpeedMultiplier, maxSpeed);
@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
         input = Vector3.ClampMagnitude(input, 1f);
         return input;
     }
-    public Vector3 ChangeAirVel(Vector3 desireDir, Vector3 velocity, float currentFrame)
+    public Vector3 ChangeAirVelocity(Vector3 desireDir, Vector3 velocity, float currentFrame)
     {   
 
         //Project the desired movement onto the current velocity vector
@@ -165,7 +165,7 @@ public class PlayerMovement : MonoBehaviour
 
         return velocity + strafeForce;
     }
-        Vector3 Friction(Vector3 velocity, float currentFrame)
+    Vector3 Friction(Vector3 velocity, float currentFrame)
     {
         float c = this.friction; // The coefficient of friction for surfaces.
         Vector3 friction = velocity;
@@ -177,13 +177,13 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    public Vector3 ChangeGroundVel(Vector3 desireDir, Vector3 velocity, float currentFrame)
+    public Vector3 ChangeGroundVelocity(Vector3 desireDir, Vector3 velocity, float currentFrame)
     {
         velocity = Friction(velocity, currentFrame);
         float currentSpeed = Vector3.Dot(velocity, desireDir);
-        float add_speed = Mathf.Clamp(maxGroundSpeed - currentSpeed, 0, maxAccel * currentFrame);
+        float addSpeed = Mathf.Clamp(maxGroundSpeed - currentSpeed, 0, maxAccel * currentFrame);
 
-        return velocity + add_speed * desireDir;
+        return velocity + addSpeed * desireDir;
     }
     /*
     void UpdateGravity()
@@ -209,14 +209,14 @@ public class PlayerMovement : MonoBehaviour
 
         if(isGrounded && velocity.y <= 0)
         {
-            velocity = ChangeGroundVel(input, velocity, Time.fixedDeltaTime);
+            velocity = ChangeGroundVelocity(input, velocity, Time.fixedDeltaTime);
 
            
             
         }
         else
         {
-            velocity = ChangeAirVel(input, velocity, Time.fixedDeltaTime);
+            velocity = ChangeAirVelocity(input, velocity, Time.fixedDeltaTime);
             //characterBody.useGravity = true;
             
             
