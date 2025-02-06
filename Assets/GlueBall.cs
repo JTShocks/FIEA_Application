@@ -5,7 +5,7 @@ using UnityEngine;
 public class GlueBall : MonoBehaviour, IReactable
 {
 
-    [SerializeField] float speedClamp = 0.5f;
+    [SerializeField] float speedClamp = 0.1f;
     public void OnReaction()
     {
         throw new System.NotImplementedException();
