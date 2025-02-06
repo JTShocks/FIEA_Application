@@ -37,13 +37,20 @@ public class WeaponController : MonoBehaviour
     }
     void OnFire()
     {
-        GameObject bolt = Instantiate(leftPrefab, Vector3.zero, Quaternion.identity);
-        SpawnBolt(bolt, leftShootLocation);
+        if(!isSwitchingWeapons)
+        {
+            GameObject bolt = Instantiate(leftPrefab, Vector3.zero, Quaternion.identity);
+            SpawnBolt(bolt, leftShootLocation);
+        }
+
     }
     void OnAltFire()
-    {
-        GameObject bolt = Instantiate(rightPrefab, Vector3.zero, Quaternion.identity);
-        SpawnBolt(bolt, rightShootLocation);
+    {        
+        if(!isSwitchingWeapons)
+        {
+            GameObject bolt = Instantiate(rightPrefab, Vector3.zero, Quaternion.identity);
+            SpawnBolt(bolt, rightShootLocation);
+        }
     }
 
     void SetActivePrefabs()
@@ -58,6 +65,25 @@ public class WeaponController : MonoBehaviour
         isTryingToSwitchWeapons = true;
         Debug.Log(switchInput);
 
+
+        TriggerSwitchWeapons?.Invoke(switchInput);
+        StartCoroutine(SwitchWeapons(switchInput));
+        isTryingToSwitchWeapons = false;
+
+    }
+
+    IEnumerator SwitchWeapons(float switchInput)
+    {
+        if(isTryingToSwitchWeapons && !isSwitchingWeapons)
+        {
+            isSwitchingWeapons = true;
+        }
+        else
+        {
+            Debug.Log("Cannot switch, already switching");
+            yield break;
+        }
+        Debug.Log("Switching weapons");
         if(switchInput < 0)
         {
             //Switch left item by 1 space
@@ -78,25 +104,8 @@ public class WeaponController : MonoBehaviour
                 currentRightPrefab = 0;
             }
         }
-        TriggerSwitchWeapons?.Invoke(switchInput);
-        StartCoroutine(SwitchWeapons());
-        isTryingToSwitchWeapons = false;
-
-    }
-
-    IEnumerator SwitchWeapons()
-    {
-        if(isTryingToSwitchWeapons && !isSwitchingWeapons)
-        {
-            isSwitchingWeapons = true;
-        }
-        else
-        {
-            Debug.Log("Cannot switch, already switching");
-            yield break;
-        }
-        Debug.Log("Switching weapons");
         yield return new WaitForSeconds(.5f);
+
         isSwitchingWeapons = false;
         SetActivePrefabs();
         Debug.Log("weapons have been switched");

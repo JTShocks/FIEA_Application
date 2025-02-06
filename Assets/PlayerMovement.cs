@@ -252,7 +252,7 @@ public class PlayerMovement : MonoBehaviour
             switch(tag)
             {
                 case "Bouncy":
-                    Debug.Log("Hit bouncy surface. Player velocity: " + collision.relativeVelocity);
+                    //Debug.Log("Hit bouncy surface. Player velocity: " + collision.relativeVelocity);
                     Vector3 bounce = Vector3.Reflect(collision.relativeVelocity,contact.normal);
                     //characterBody.AddForce(bounce, ForceMode.VelocityChange);
                     //SendMessage("OnBounce", bounce);
