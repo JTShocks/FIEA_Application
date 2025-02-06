@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class WeaponController : MonoBehaviour
 {
@@ -14,16 +15,23 @@ public class WeaponController : MonoBehaviour
     [SerializeField] List<GameObject> catalysts = new();
     [SerializeField] List<GameObject> bases = new();
 
+
+        InputAction switchAction;
+
+        public static event Action<int> TriggerSwitchWeapons;
+
+        int currentLeftPrefab = 0;
+        int currentRightPrefab = 0;
+
     void Awake()
     {
-        if(leftPrefab == null)
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        switchAction = playerInput.actions["SwitchItem"];
+        if(leftPrefab == null || rightPrefab == null)
         {
-            leftPrefab = bases[0];
+            SetActivePrefabs();
         }
-        if(rightPrefab == null)
-        {
-            rightPrefab = catalysts[0];
-        }
+
     }
     void OnFire()
     {
@@ -34,6 +42,40 @@ public class WeaponController : MonoBehaviour
     {
         GameObject bolt = Instantiate(rightPrefab, Vector3.zero, Quaternion.identity);
         SpawnBolt(bolt, rightShootLocation);
+    }
+
+    void SetActivePrefabs()
+    {
+        leftPrefab = bases[currentLeftPrefab];
+        rightPrefab = catalysts[currentRightPrefab];
+    }
+
+    void SwitchItem()
+    {
+        var switchInput = switchAction.ReadValue<int>();
+
+        if(switchInput < 0)
+        {
+            //Switch left item by 1 space
+
+            currentLeftPrefab += 1;
+            if(currentLeftPrefab > bases.Count - 1)
+            {
+                currentLeftPrefab = 0;
+            }
+            
+        }
+        else if(switchInput > 0)
+        {
+            //Switch right item by 1 space
+            currentRightPrefab += 1;
+            if(currentRightPrefab > catalysts.Count - 1)
+            {
+                currentRightPrefab = 0;
+            }
+        }
+        SetActivePrefabs();
+        TriggerSwitchWeapons?.Invoke(switchInput);
     }
 
     private void SpawnBolt(GameObject instance, Transform spawnLocation)

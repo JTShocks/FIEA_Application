@@ -73,22 +73,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SwitchLeftItem"",
-                    ""type"": ""Button"",
+                    ""name"": ""SwitchItem"",
+                    ""type"": ""Value"",
                     ""id"": ""6362607f-105a-4b53-83f3-c785854631aa"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Integer"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""SwitchRightItem"",
-                    ""type"": ""Button"",
-                    ""id"": ""c569c392-9507-42ce-a73d-06bba5860b96"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Kick"",
@@ -345,28 +336,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""efc858f0-396b-43ad-a561-c7c185c0f296"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SwitchLeftItem"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6c2bea1c-a66c-4a95-85e1-05c60333e708"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SwitchRightItem"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""9d21e34a-8dce-499c-b6d6-7f8d5297ac48"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
@@ -375,6 +344,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Kick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""ee5950a3-71b2-41a9-b671-7a7521e1b692"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchItem"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""26c9ebf8-6db4-455b-a49c-e8b77d042da1"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""793c16a7-2cca-4448-9400-89c7fa079f02"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -965,8 +967,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_AltFire = m_Player.FindAction("AltFire", throwIfNotFound: true);
-        m_Player_SwitchLeftItem = m_Player.FindAction("SwitchLeftItem", throwIfNotFound: true);
-        m_Player_SwitchRightItem = m_Player.FindAction("SwitchRightItem", throwIfNotFound: true);
+        m_Player_SwitchItem = m_Player.FindAction("SwitchItem", throwIfNotFound: true);
         m_Player_Kick = m_Player.FindAction("Kick", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1046,8 +1047,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_AltFire;
-    private readonly InputAction m_Player_SwitchLeftItem;
-    private readonly InputAction m_Player_SwitchRightItem;
+    private readonly InputAction m_Player_SwitchItem;
     private readonly InputAction m_Player_Kick;
     public struct PlayerActions
     {
@@ -1058,8 +1058,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @AltFire => m_Wrapper.m_Player_AltFire;
-        public InputAction @SwitchLeftItem => m_Wrapper.m_Player_SwitchLeftItem;
-        public InputAction @SwitchRightItem => m_Wrapper.m_Player_SwitchRightItem;
+        public InputAction @SwitchItem => m_Wrapper.m_Player_SwitchItem;
         public InputAction @Kick => m_Wrapper.m_Player_Kick;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -1085,12 +1084,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @AltFire.started += instance.OnAltFire;
             @AltFire.performed += instance.OnAltFire;
             @AltFire.canceled += instance.OnAltFire;
-            @SwitchLeftItem.started += instance.OnSwitchLeftItem;
-            @SwitchLeftItem.performed += instance.OnSwitchLeftItem;
-            @SwitchLeftItem.canceled += instance.OnSwitchLeftItem;
-            @SwitchRightItem.started += instance.OnSwitchRightItem;
-            @SwitchRightItem.performed += instance.OnSwitchRightItem;
-            @SwitchRightItem.canceled += instance.OnSwitchRightItem;
+            @SwitchItem.started += instance.OnSwitchItem;
+            @SwitchItem.performed += instance.OnSwitchItem;
+            @SwitchItem.canceled += instance.OnSwitchItem;
             @Kick.started += instance.OnKick;
             @Kick.performed += instance.OnKick;
             @Kick.canceled += instance.OnKick;
@@ -1113,12 +1109,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @AltFire.started -= instance.OnAltFire;
             @AltFire.performed -= instance.OnAltFire;
             @AltFire.canceled -= instance.OnAltFire;
-            @SwitchLeftItem.started -= instance.OnSwitchLeftItem;
-            @SwitchLeftItem.performed -= instance.OnSwitchLeftItem;
-            @SwitchLeftItem.canceled -= instance.OnSwitchLeftItem;
-            @SwitchRightItem.started -= instance.OnSwitchRightItem;
-            @SwitchRightItem.performed -= instance.OnSwitchRightItem;
-            @SwitchRightItem.canceled -= instance.OnSwitchRightItem;
+            @SwitchItem.started -= instance.OnSwitchItem;
+            @SwitchItem.performed -= instance.OnSwitchItem;
+            @SwitchItem.canceled -= instance.OnSwitchItem;
             @Kick.started -= instance.OnKick;
             @Kick.performed -= instance.OnKick;
             @Kick.canceled -= instance.OnKick;
@@ -1309,8 +1302,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAltFire(InputAction.CallbackContext context);
-        void OnSwitchLeftItem(InputAction.CallbackContext context);
-        void OnSwitchRightItem(InputAction.CallbackContext context);
+        void OnSwitchItem(InputAction.CallbackContext context);
         void OnKick(InputAction.CallbackContext context);
     }
     public interface IUIActions

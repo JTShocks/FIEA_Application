@@ -51,22 +51,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwitchLeftItem",
-                    "type": "Button",
+                    "name": "SwitchItem",
+                    "type": "Value",
                     "id": "6362607f-105a-4b53-83f3-c785854631aa",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Integer",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SwitchRightItem",
-                    "type": "Button",
-                    "id": "c569c392-9507-42ce-a73d-06bba5860b96",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Kick",
@@ -323,28 +314,6 @@
                 },
                 {
                     "name": "",
-                    "id": "efc858f0-396b-43ad-a561-c7c185c0f296",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SwitchLeftItem",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6c2bea1c-a66c-4a95-85e1-05c60333e708",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SwitchRightItem",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "9d21e34a-8dce-499c-b6d6-7f8d5297ac48",
                     "path": "<Keyboard>/f",
                     "interactions": "",
@@ -353,6 +322,39 @@
                     "action": "Kick",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "ee5950a3-71b2-41a9-b671-7a7521e1b692",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchItem",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "26c9ebf8-6db4-455b-a49c-e8b77d042da1",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "793c16a7-2cca-4448-9400-89c7fa079f02",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
