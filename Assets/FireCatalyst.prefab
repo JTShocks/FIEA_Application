@@ -78,8 +78,8 @@ MonoBehaviour:
   bombElement: 0
   damage: 0
   explodeRadius: 5
-  projectileSpeed: 30
-  explodeForce: 10
+  projectileSpeed: 20
+  explodeForce: 8
 --- !u!135 &1166100668786018480
 SphereCollider:
   m_ObjectHideFlags: 0

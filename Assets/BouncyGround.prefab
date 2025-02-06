@@ -126,7 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daeae5ac936f9f243976ad9061c5b4af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reactionForce: 20
+  reactionForce: 13
+  bounceSound: {fileID: 0}
+  reactSound: {fileID: 0}
 --- !u!65 &5851703860461120815
 BoxCollider:
   m_ObjectHideFlags: 0

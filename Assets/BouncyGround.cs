@@ -41,13 +41,14 @@ public class BouncyGround : MonoBehaviour, IReactable
                 {
                     hit.rigidbody.AddForce(reactionForce *Vector3.up, ForceMode.Impulse);
                 }
+                Destroy(gameObject);
             break;
         }
     }
 
     public void OnReaction()
     {
-        throw new NotImplementedException();
+        //Destroy the bouncy ground
     }
 
 
