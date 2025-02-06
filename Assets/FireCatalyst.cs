@@ -10,7 +10,11 @@ public class FireCatalyst : Bomb
     public override void OnCollisionEnter(Collision other)
     {
 
-        other.collider.GetComponent<IReactable>()?.React(bombElement);
+        IReactable reactable = other.collider.GetComponent<IReactable>();
+        if(reactable != null)
+        {
+            reactable.React(bombElement);
+        }
 
         rb.velocity = Vector3.zero;
         contactNormal = other.contacts[0].normal;
@@ -40,5 +44,6 @@ public class FireCatalyst : Bomb
                 }
                 
             }
+            Destroy(gameObject);
     }
 }

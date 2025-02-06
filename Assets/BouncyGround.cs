@@ -19,14 +19,6 @@ public class BouncyGround : MonoBehaviour, IReactable
     }
     Vector3 objectVelocity;
 
-
-    void OnCollisionEnter(Collision collision)
-    {
-        Vector3 velocity = collision.relativeVelocity;
-        Debug.Log("Bouncy ground impact:" + velocity);
-        //Play bounce SFX
-    }
-
     public void React(Bomb.Element element)
     {
         switch(element)
@@ -35,13 +27,18 @@ public class BouncyGround : MonoBehaviour, IReactable
                 //Bouncy ground explodes and pushes player high into the sky
                 //physics cast to find all rigidbodies and have them instantly move upwards
                 Debug.Log("Reaction with Fire!");
-                RaycastHit[] hits = Physics.BoxCastAll(transform.position + (Vector3.up*2.5f), new Vector3(8,5,8), Vector3.up, Quaternion.identity);
+                RaycastHit[] hits = Physics.BoxCastAll(transform.position + (Vector3.up*2.5f), new Vector3(8,5,8), Vector3.up, Quaternion.identity, 5);
 
                 foreach(RaycastHit hit in hits)
                 {
-                    hit.rigidbody.AddForce(reactionForce *Vector3.up, ForceMode.Impulse);
+                    if(hit.rigidbody != null)
+                    {
+                        hit.rigidbody.AddForce(reactionForce *Vector3.up, ForceMode.Impulse);
+                    }
                 }
-                Destroy(gameObject);
+
+                OnReaction();
+
             break;
         }
     }
@@ -49,6 +46,7 @@ public class BouncyGround : MonoBehaviour, IReactable
     public void OnReaction()
     {
         //Destroy the bouncy ground
+        Destroy(gameObject);
     }
 
 

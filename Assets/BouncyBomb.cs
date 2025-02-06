@@ -20,5 +20,6 @@ public class BouncyBomb : Bomb
         //Can create a prefab that holds all of these values and makes it easier to edit fine details
         Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.up, contactNormal);
         Instantiate(bouncyGroundPrefab, transform.position, spawnRotation);
+        Destroy(gameObject);
     }
 }
