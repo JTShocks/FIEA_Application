@@ -71,6 +71,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchLeftItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""6362607f-105a-4b53-83f3-c785854631aa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchRightItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""c569c392-9507-42ce-a73d-06bba5860b96"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Kick"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6bda5b0-004f-4958-9952-367b8f5dac87"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -313,6 +340,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""AltFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""efc858f0-396b-43ad-a561-c7c185c0f296"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLeftItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c2bea1c-a66c-4a95-85e1-05c60333e708"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchRightItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d21e34a-8dce-499c-b6d6-7f8d5297ac48"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Kick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -905,6 +965,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_AltFire = m_Player.FindAction("AltFire", throwIfNotFound: true);
+        m_Player_SwitchLeftItem = m_Player.FindAction("SwitchLeftItem", throwIfNotFound: true);
+        m_Player_SwitchRightItem = m_Player.FindAction("SwitchRightItem", throwIfNotFound: true);
+        m_Player_Kick = m_Player.FindAction("Kick", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -983,6 +1046,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_AltFire;
+    private readonly InputAction m_Player_SwitchLeftItem;
+    private readonly InputAction m_Player_SwitchRightItem;
+    private readonly InputAction m_Player_Kick;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -992,6 +1058,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @AltFire => m_Wrapper.m_Player_AltFire;
+        public InputAction @SwitchLeftItem => m_Wrapper.m_Player_SwitchLeftItem;
+        public InputAction @SwitchRightItem => m_Wrapper.m_Player_SwitchRightItem;
+        public InputAction @Kick => m_Wrapper.m_Player_Kick;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1016,6 +1085,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @AltFire.started += instance.OnAltFire;
             @AltFire.performed += instance.OnAltFire;
             @AltFire.canceled += instance.OnAltFire;
+            @SwitchLeftItem.started += instance.OnSwitchLeftItem;
+            @SwitchLeftItem.performed += instance.OnSwitchLeftItem;
+            @SwitchLeftItem.canceled += instance.OnSwitchLeftItem;
+            @SwitchRightItem.started += instance.OnSwitchRightItem;
+            @SwitchRightItem.performed += instance.OnSwitchRightItem;
+            @SwitchRightItem.canceled += instance.OnSwitchRightItem;
+            @Kick.started += instance.OnKick;
+            @Kick.performed += instance.OnKick;
+            @Kick.canceled += instance.OnKick;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1035,6 +1113,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @AltFire.started -= instance.OnAltFire;
             @AltFire.performed -= instance.OnAltFire;
             @AltFire.canceled -= instance.OnAltFire;
+            @SwitchLeftItem.started -= instance.OnSwitchLeftItem;
+            @SwitchLeftItem.performed -= instance.OnSwitchLeftItem;
+            @SwitchLeftItem.canceled -= instance.OnSwitchLeftItem;
+            @SwitchRightItem.started -= instance.OnSwitchRightItem;
+            @SwitchRightItem.performed -= instance.OnSwitchRightItem;
+            @SwitchRightItem.canceled -= instance.OnSwitchRightItem;
+            @Kick.started -= instance.OnKick;
+            @Kick.performed -= instance.OnKick;
+            @Kick.canceled -= instance.OnKick;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1222,6 +1309,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAltFire(InputAction.CallbackContext context);
+        void OnSwitchLeftItem(InputAction.CallbackContext context);
+        void OnSwitchRightItem(InputAction.CallbackContext context);
+        void OnKick(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

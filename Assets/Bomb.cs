@@ -83,5 +83,6 @@ public class Bomb : MonoBehaviour, IProjectile
     internal virtual void OnExplode()
     {
         //Logic for what happens when the bomb explodes
+        
     }
 }

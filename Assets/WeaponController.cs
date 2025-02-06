@@ -10,6 +10,21 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private Transform leftShootLocation;
     
     [SerializeField] private Transform rightShootLocation;
+
+    [SerializeField] List<GameObject> catalysts = new();
+    [SerializeField] List<GameObject> bases = new();
+
+    void Awake()
+    {
+        if(leftPrefab == null)
+        {
+            leftPrefab = bases[0];
+        }
+        if(rightPrefab == null)
+        {
+            rightPrefab = catalysts[0];
+        }
+    }
     void OnFire()
     {
         GameObject bolt = Instantiate(leftPrefab, Vector3.zero, Quaternion.identity);

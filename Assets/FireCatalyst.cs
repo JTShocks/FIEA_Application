@@ -10,12 +10,6 @@ public class FireCatalyst : Bomb
     public override void OnCollisionEnter(Collision other)
     {
 
-        IReactable reactable = other.collider.GetComponent<IReactable>();
-        if(reactable != null)
-        {
-            reactable.React(bombElement);
-        }
-
         rb.velocity = Vector3.zero;
         contactNormal = other.contacts[0].normal;
         rb.isKinematic = true;
@@ -31,6 +25,13 @@ public class FireCatalyst : Bomb
             {
                 Vector3 contact = hit.ClosestPoint(transform.position);
 
+                
+                IReactable reactable = hit.GetComponent<IReactable>();
+                if(reactable != null)
+                {
+                    reactable.React(bombElement);
+                    continue;
+                }
 
 
 
