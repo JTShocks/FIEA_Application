@@ -27,7 +27,7 @@ public class BouncyGround : MonoBehaviour, IReactable
                 //Bouncy ground explodes and pushes player high into the sky
                 //physics cast to find all rigidbodies and have them instantly move upwards
                 Debug.Log("Reaction with Fire!");
-                RaycastHit[] hits = Physics.BoxCastAll(transform.position + (Vector3.up*2.5f), new Vector3(5,5,5), Vector3.up, Quaternion.identity, 5);
+                RaycastHit[] hits = Physics.BoxCastAll(transform.position + (Vector3.up*2.5f), new Vector3(5,5,5), transform.up, Quaternion.identity, 5);
 
                 foreach(RaycastHit hit in hits)
                 {
