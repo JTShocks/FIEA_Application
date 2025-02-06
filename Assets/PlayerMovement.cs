@@ -53,6 +53,9 @@ public class PlayerMovement : MonoBehaviour
         InputAction interactAction;
 
         float friction;
+    RaycastHit slopeHit;
+
+    Vector3 slopeMoveDirection;
 
     void Awake()
     {
@@ -95,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
           // velocity.y = -1;
         }
 
+
         MovePlayer();
 
     }
@@ -106,10 +110,16 @@ public class PlayerMovement : MonoBehaviour
         movementSpeedMultiplier = 1;
         OnBeforeMove?.Invoke();
         var input = GetMovementInput();
+        //slopeMoveDirection = Vector3.ProjectOnPlane(input, slopeHit.normal);
+
+        //velocity.y = characterBody.velocity.y;
 
         if(isGrounded && characterBody.velocity.y <= 0)
         {
+
             velocity = ChangeGroundVelocity(input, characterBody.velocity, Time.fixedDeltaTime);
+            
+
         }
         else
         {
@@ -118,7 +128,28 @@ public class PlayerMovement : MonoBehaviour
 
         velocity = Vector3.ClampMagnitude(velocity*movementSpeedMultiplier, maxSpeed);
         characterBody.velocity = new Vector3(velocity.x, characterBody.velocity.y, velocity.z);
+
+
         
+    }
+
+    bool OnSlope()
+    {
+        if(Physics.Raycast(characterBody.position, Vector3.down, out slopeHit, GetComponent<CapsuleCollider>().height / 2 + 0.5f))
+        {
+            if(slopeHit.normal != Vector3.up)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     Vector3 GetMovementInput()
