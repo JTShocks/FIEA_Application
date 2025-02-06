@@ -24,7 +24,7 @@ public class CollectableBobbing : MonoBehaviour
 
 
 
-        transform.position = new Vector3(transform.position.x, transform.position.y + bobOffset, transform.position.z); 
+        transform.localPosition = new Vector3( transform.localPosition.x,  transform.localPosition.y + bobOffset,  transform.localPosition.z); 
 
     }
 
