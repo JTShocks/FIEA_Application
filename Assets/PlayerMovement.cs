@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions["Move"];
 
-        friction = GetComponent<Collider>().material.dynamicFriction;
+        //friction = GetComponent<Collider>().material.dynamicFriction;
     }
     void OnEnable()
     {
@@ -198,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
     }
     Vector3 Friction(Vector3 velocity, float currentFrame)
     {
-        float c = this.friction; // The coefficient of friction for surfaces.
+        float c = 0.0001f; // The coefficient of friction for surfaces.
         Vector3 friction = velocity;
         friction.Normalize();
         friction *= -c * currentFrame;
